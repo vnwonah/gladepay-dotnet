@@ -3,10 +3,10 @@ using Xunit;
 
 namespace gladepay_dotnet_tests
 {
-    public class UnitTest1
+    public class HttpServiceShould
     {
         [Fact]
-        public void Test1()
+        public void SendPutRequest()
         {
 
         }
