@@ -4,7 +4,7 @@ using System.Text;
 
 namespace gladepay_dotnet.Models
 {
-    public class Credentials
+    public class Credential
     {
         public string BaseUrl { get; set; }
 

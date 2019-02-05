@@ -6,12 +6,16 @@ using System.Text;
 
 namespace gladepay_dotnet.Models.ResponseModels
 {
-    internal class Response
+    public class Response
     {
-        internal ResponseCode Status { get; set; }
+        public ResponseCode Status { get; set; }
 
-        internal string Message { get; set; }
+        public JObject Data { get; set; }
 
-        internal JObject Data { get; set; }
+        public JArray Headers { get; set; }
+
+        public JObject RequestParameters { get; set; }
+
+
     }
 }

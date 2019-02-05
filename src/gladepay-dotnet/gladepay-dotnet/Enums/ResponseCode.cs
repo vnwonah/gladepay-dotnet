@@ -4,15 +4,16 @@ using System.Text;
 
 namespace gladepay_dotnet.Enums
 {
-    internal enum ResponseCode
+    public enum ResponseCode
     {
         
-        OK,
-        BadRequest,
-        Forbidden,
-        InternalServerError,
+        OK = 200,
+        Accepted = 202,
+        BadRequest = 400,
+        Forbidden = 401,
+        InternalServerError = 500,
         Unauthorized,
-        NotFound
+        NotFound = 404
 
     }
 }

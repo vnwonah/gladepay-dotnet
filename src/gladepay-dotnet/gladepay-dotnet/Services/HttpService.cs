@@ -1,4 +1,6 @@
-﻿using gladepay_dotnet.Models;
+﻿using gladepay_dotnet.Enums;
+using gladepay_dotnet.Helpers;
+using gladepay_dotnet.Models;
 using gladepay_dotnet.Models.ResponseModels;
 using System;
 using System.Collections.Generic;
@@ -11,29 +13,38 @@ namespace gladepay_dotnet.Services
     public class HttpService
     {
         
-        private static readonly Credentials _credentials;
+        private static Credential _credential;
 
         private static HttpClient _client;
 
-        public HttpService(Credentials credentials)
+        public HttpService(Credential credential)
         {
             if(_client == null)
             {
+                _credential = credential;
                 _client = new HttpClient
                 {
-                    BaseAddress = new Uri(_credentials.BaseUrl)
+                    BaseAddress = new Uri(_credential.BaseUrl)
                     
                 };
-                _client.DefaultRequestHeaders.TryAddWithoutValidation("mid", credentials.MerchantId);
-                _client.DefaultRequestHeaders.TryAddWithoutValidation("key", credentials.MerchantKey);
-                _client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Type", "application/json");
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("mid", credential.MerchantId);
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("key", credential.MerchantKey);
+                _client.DefaultRequestHeaders.TryAddWithoutValidation("content-type", "application/json");
             }
         }
 
-        internal async Task<Response> PutAsync<T>(T request)
+        public async Task<Response> PutAsync<T>(Endpoint endpoint, T requestObject) where T : new()
         {
-            //await _client.PutAsync();
-            throw new NotImplementedException();
+            var content = CreateContent(HttpHelper.Serialize(requestObject));
+
+            var response = await _client.PutAsync(HttpHelper.GetEndpoint(endpoint), content);
+
+            return await HttpHelper.DeserializeResponseAsync(response);
+        }
+
+        private StringContent CreateContent(string contentString)
+        {
+            return new StringContent(contentString, Encoding.UTF8, "application/json");
         }
 
     }

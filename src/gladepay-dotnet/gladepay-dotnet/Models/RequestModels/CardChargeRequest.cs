@@ -8,7 +8,7 @@ namespace gladepay_dotnet.Models.RequestModels
     public class CardChargeRequest : BaseRequest
     {
         [JsonProperty("paymentType")]
-        public const string PaymentType = "Card";
+        public const string PaymentType = "card";
 
         [JsonProperty("user")]
         public User User { get; set; }
