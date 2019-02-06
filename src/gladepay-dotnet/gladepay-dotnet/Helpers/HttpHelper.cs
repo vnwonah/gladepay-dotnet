@@ -25,24 +25,24 @@ namespace gladepay_dotnet.Helpers
 
             var responseObject = new Response
             {
-                Status = GetResponseCode(content["status"].ToString()),
+                StatusCode = GetResponseCode(content["status"].ToString()),
                 RequestParameters = JObject.Parse(Serialize(response.RequestMessage)),
                 Headers = JArray.Parse(Serialize(response.Headers))
             };
-
+            
             content.Remove("status");
             responseObject.Data = content;
             return responseObject;
         }
 
-        internal static ResponseCode GetResponseCode(string status)
+        internal static HttpStatusCode GetResponseCode(string status)
         {
             switch (status)
             {
                 case "202":
-                    return ResponseCode.Accepted;
+                    return HttpStatusCode.Accepted;
                 default:
-                    return ResponseCode.OK;
+                    return HttpStatusCode.OK;
             }
         }
 

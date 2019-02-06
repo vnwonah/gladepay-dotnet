@@ -3,6 +3,7 @@ using gladepay_dotnet.Models;
 using gladepay_dotnet.Models.RequestModels;
 using gladepay_dotnet.Services;
 using System;
+using System.Net;
 using Xunit;
 
 namespace gladepay_dotnet_tests
@@ -52,7 +53,7 @@ namespace gladepay_dotnet_tests
             var res = await _httpService.PutAsync<CardChargeRequest>(Endpoint.payment, req);
 
             //Assert
-            Assert.True(res.Status == ResponseCode.Accepted);
+            Assert.True(res.StatusCode == HttpStatusCode.Accepted);
         }
     }
 }
