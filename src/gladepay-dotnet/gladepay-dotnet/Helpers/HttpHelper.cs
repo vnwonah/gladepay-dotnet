@@ -39,11 +39,24 @@ namespace gladepay_dotnet.Helpers
         {
             switch (status)
             {
+                case "200":
+                    return HttpStatusCode.OK;
                 case "202":
                     return HttpStatusCode.Accepted;
                 default:
-                    return HttpStatusCode.OK;
+                    return HttpStatusCode.BadRequest;
             }
+        }
+
+        internal static string GetEndpoint<T>(T requestObject) where T : new()
+        {
+            if (requestObject.GetType() == typeof(CardChargeRequest))
+                return GetEndpoint(Endpoint.payment);
+            else if (requestObject.GetType() == typeof(CardChargeValidationRequest))
+                return GetEndpoint(Endpoint.payment);
+            else if (requestObject.GetType() == typeof(RecurringCardChargeRequest))
+                return GetEndpoint(Endpoint.payment);
+            return GetEndpoint(Endpoint.disburse);
         }
 
         internal static string GetEndpoint(Endpoint endPoint)

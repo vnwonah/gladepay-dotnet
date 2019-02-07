@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace gladepay_dotnet.Services
 {
-    public class HttpService
+    public class GladePayService
     {
         
         private static Credential _credential;
 
         private static HttpClient _client;
 
-        public HttpService(Credential credential)
+        public GladePayService(Credential credential)
         {
             if(_client == null)
             {
@@ -33,11 +33,12 @@ namespace gladepay_dotnet.Services
             }
         }
 
-        public async Task<Response> PutAsync<T>(Endpoint endpoint, T requestObject) where T : new()
+        public async Task<Response> PutAsync<T>(T requestObject) where T : new()
         {
             var content = CreateContent(HttpHelper.Serialize(requestObject));
 
-            var response = await _client.PutAsync(HttpHelper.GetEndpoint(endpoint), content);
+
+            var response = await _client.PutAsync(HttpHelper.GetEndpoint(requestObject), content);
 
             return await HttpHelper.DeserializeResponseAsync(response);
         }

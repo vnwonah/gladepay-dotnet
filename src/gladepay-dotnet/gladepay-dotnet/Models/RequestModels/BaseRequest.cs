@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using gladepay_dotnet.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using gladepay_dotnet.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace gladepay_dotnet.Models.RequestModels
     public class CardChargeRequest : BaseRequest
     {
         [JsonProperty("paymentType")]
-        public const string PaymentType = "card";
+        public readonly string PaymentType = "card";
 
         [JsonProperty("user")]
         public User User { get; set; }
