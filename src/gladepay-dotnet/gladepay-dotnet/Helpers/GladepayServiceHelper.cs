@@ -77,6 +77,8 @@ namespace gladepay_dotnet.Helpers
                 return GetEndpoint(Endpoint.resources);
             else if (requestObject.GetType() == typeof(AccountDetailsVerificationRequest))
                 return GetEndpoint(Endpoint.resources);
+            else if (requestObject.GetType() == typeof(BVNVerificationRequest))
+                return GetEndpoint(Endpoint.resources);
             return GetEndpoint(Endpoint.disburse);
         }
 

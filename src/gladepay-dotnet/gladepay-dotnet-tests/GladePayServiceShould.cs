@@ -193,5 +193,22 @@ namespace gladepay_dotnet_tests
             Assert.True(res.StatusCode == HttpStatusCode.OK);
             Debug.WriteLine(res.Data);
         }
+
+        [Fact]
+        public async void VerifyBVNDetails()
+        {
+            //Arrange
+            var req = new BVNVerificationRequest
+            {
+                BVN = "12345678901"
+            };
+
+            //Act
+            var res = await _gladepayService.PutAsync<BVNVerificationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+        }
     }
 }
