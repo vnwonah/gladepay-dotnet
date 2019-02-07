@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace gladepay_dotnet.Helpers
 {
-    internal static class HttpHelper
+    internal static class GladepayServiceHelper
     {
         internal static string Serialize<T>(T @object)
         {
@@ -23,13 +23,26 @@ namespace gladepay_dotnet.Helpers
         {
             var content = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+          
+
             var responseObject = new Response
             {
-                StatusCode = GetResponseCode(content["status"].ToString()),
                 RequestParameters = JObject.Parse(Serialize(response.RequestMessage)),
                 Headers = JArray.Parse(Serialize(response.Headers))
             };
-            
+
+            try
+            {
+                responseObject.StatusCode = GetResponseCode(content["status"].ToString());
+            }
+            catch (Exception e)
+            {
+                if (content.ContainsKey("214"))
+                {
+                    responseObject.StatusCode = HttpStatusCode.OK;
+                }
+            }
+
             content.Remove("status");
             responseObject.Data = content;
             return responseObject;
@@ -43,6 +56,8 @@ namespace gladepay_dotnet.Helpers
                     return HttpStatusCode.OK;
                 case "202":
                     return HttpStatusCode.Accepted;
+                case "success":
+                    return HttpStatusCode.OK;
                 default:
                     return HttpStatusCode.BadRequest;
             }
@@ -56,6 +71,12 @@ namespace gladepay_dotnet.Helpers
                 return GetEndpoint(Endpoint.payment);
             else if (requestObject.GetType() == typeof(RecurringCardChargeRequest))
                 return GetEndpoint(Endpoint.payment);
+            else if (requestObject.GetType() == typeof(BankListRequest))
+                return GetEndpoint(Endpoint.resources);
+            else if (requestObject.GetType() == typeof(ChargeableBankListRequest))
+                return GetEndpoint(Endpoint.resources);
+            else if (requestObject.GetType() == typeof(AccountDetailsVerificationRequest))
+                return GetEndpoint(Endpoint.resources);
             return GetEndpoint(Endpoint.disburse);
         }
 

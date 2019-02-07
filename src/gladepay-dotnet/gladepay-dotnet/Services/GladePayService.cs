@@ -35,12 +35,12 @@ namespace gladepay_dotnet.Services
 
         public async Task<Response> PutAsync<T>(T requestObject) where T : new()
         {
-            var content = CreateContent(HttpHelper.Serialize(requestObject));
+            var content = CreateContent(GladepayServiceHelper.Serialize(requestObject));
 
 
-            var response = await _client.PutAsync(HttpHelper.GetEndpoint(requestObject), content);
+            var response = await _client.PutAsync(GladepayServiceHelper.GetEndpoint(requestObject), content);
 
-            return await HttpHelper.DeserializeResponseAsync(response);
+            return await GladepayServiceHelper.DeserializeResponseAsync(response);
         }
 
         private StringContent CreateContent(string contentString)

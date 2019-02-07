@@ -4,6 +4,7 @@ using gladepay_dotnet.Models.RequestModels;
 using gladepay_dotnet.Models.ResponseModels;
 using gladepay_dotnet.Services;
 using System;
+using System.Diagnostics;
 using System.Net;
 using Xunit;
 
@@ -90,6 +91,7 @@ namespace gladepay_dotnet_tests
 
             //Act
             res = await _gladepayService.PutAsync<CardChargeRequest>(req1);
+            Debug.WriteLine(res.Data);
 
             var req = new CardChargeValidationRequest
             {
@@ -102,6 +104,8 @@ namespace gladepay_dotnet_tests
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+
         }
 
         [Fact]
@@ -139,6 +143,55 @@ namespace gladepay_dotnet_tests
 
             //Act
             var res = await _gladepayService.PutAsync<RecurringCardChargeRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async void GetListOfBanks()
+        {
+            //Arrange
+            var req = new BankListRequest();
+
+            //Act
+            var res = await _gladepayService.PutAsync<BankListRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async void GetChargeableBankList()
+        {
+            //Arrange 
+            var req = new ChargeableBankListRequest();
+
+            //Act
+            var res = await _gladepayService.PutAsync<ChargeableBankListRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+
+        }
+
+        [Fact]
+        public async void VerifyAccountDetails()
+        {
+            //Arrange
+            var req = new AccountDetailsVerificationRequest
+            {
+                AccountNumber = "0040000009",
+                BankCode = "058"
+            };
+
+            //Act
+            var res = await _gladepayService.PutAsync<AccountDetailsVerificationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
         }
     }
 }
