@@ -8,6 +8,7 @@ namespace gladepay_dotnet.Enums
     {
         payment,
         disburse,
-        resources
+        resources,
+        bills
     }
 }
