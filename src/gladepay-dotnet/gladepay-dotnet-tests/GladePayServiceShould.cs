@@ -24,7 +24,7 @@ namespace gladepay_dotnet_tests
             });
         }
         [Fact]
-        public async void SendPutRequest()
+        public async void InitiateCardChargeRequest()
         {
             //Arrange
             var req = new CardChargeRequest
@@ -205,6 +205,75 @@ namespace gladepay_dotnet_tests
 
             //Act
             var res = await _gladepayService.PutAsync<BVNVerificationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void GetListofBills()
+        {
+            //Arrange
+            var req = new BillsListRequest();
+
+            //Act
+            var res = await _gladepayService.PutAsync<BillsListRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void ValidateCustomerInformationForBill()
+        {
+            //Arrange
+            var req = new ValidateCustomerBillInformationRequest
+            {
+                PayCode = "lAApm6OBmRmp3cQ",
+                Reference = "0000000001"
+            };
+
+            //Act
+            var res = await _gladepayService.PutAsync<ValidateCustomerBillInformationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+
+        }
+
+        [Fact]
+        public async void MakeBillPayment()
+        {
+            var req = new BillPaymentRequest
+            {
+                Paycode = "lAApm6OBmRmp3cQ",
+                Reference = "0000000001",
+                Amount = "100",
+                OrderReference = "abcd"
+            };
+
+            var res = await _gladepayService.PutAsync<BillPaymentRequest>(req);
+
+
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void VerifyBillPayment()
+        {
+            //Arrange
+            var req = new VerifyBillPaymentRequest
+            {
+                TransactionReference = "GP|BP|987555815|20190115N"
+            };
+
+
+            //Act
+            var res = await _gladepayService.PutAsync<VerifyBillPaymentRequest>(req);
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);

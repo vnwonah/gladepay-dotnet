@@ -37,7 +37,7 @@ namespace gladepay_dotnet.Helpers
             }
             catch (Exception e)
             {
-                if (content.ContainsKey("214"))
+                if (content.ContainsKey("214") || content.ContainsKey("data"))
                 {
                     responseObject.StatusCode = HttpStatusCode.OK;
                 }
@@ -79,6 +79,14 @@ namespace gladepay_dotnet.Helpers
                 return GetEndpoint(Endpoint.resources);
             else if (requestObject.GetType() == typeof(BVNVerificationRequest))
                 return GetEndpoint(Endpoint.resources);
+            else if (requestObject.GetType() == typeof(BillsListRequest))
+                return GetEndpoint(Endpoint.bills);
+            else if (requestObject.GetType() == typeof(ValidateCustomerBillInformationRequest))
+                return GetEndpoint(Endpoint.bills);
+            else if (requestObject.GetType() == typeof(BillPaymentRequest))
+                return GetEndpoint(Endpoint.bills);
+            else if (requestObject.GetType() == typeof(VerifyBillPaymentRequest))
+                return GetEndpoint(Endpoint.bills);
             return GetEndpoint(Endpoint.disburse);
         }
 
