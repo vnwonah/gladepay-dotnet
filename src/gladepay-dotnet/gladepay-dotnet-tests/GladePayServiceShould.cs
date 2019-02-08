@@ -4,6 +4,7 @@ using gladepay_dotnet.Models.RequestModels;
 using gladepay_dotnet.Models.ResponseModels;
 using gladepay_dotnet.Services;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using Xunit;
@@ -347,13 +348,71 @@ namespace gladepay_dotnet_tests
                 OrderReference = "TX00001"
             };
 
-            //Assert
+            //Act
             var res = await _gladepayService.PutAsync<MoneyTransferRequest>(req);
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
             Debug.WriteLine(res.Data);
 
+        }
+
+       
+        [Fact]
+        public async void InitiateBulkMoneyTransferRequest()
+        {
+            //Arrange
+            Random r = new Random(5);
+            var req = new BulkMoneyTransferRequest
+            {
+                TransferItems = new List<TransferItem>
+                {
+                    new TransferItem
+                    {
+                        Amount = "50",
+                        BankCode = "058",
+                        AccountNumber = "0153641199",
+                        SenderName = "Oyo Ededet Akwa",
+                        Narration = "",
+                        OrderReference = "TX0001" + r.Next(9) + DateTime.Now.ToUniversalTime()
+        },
+                    new TransferItem
+                    {
+                        Amount = "50",
+                        BankCode = "033",
+                        AccountNumber = "2066024103",
+                        SenderName = "Vincent Nwonah",
+                        Narration = "",
+                        OrderReference = "TX000" + r.Next(9) + DateTime.Now.ToUniversalTime()
+                    }
+                }
+            };
+
+            //Act
+            var res = await _gladepayService.PutAsync<BulkMoneyTransferRequest>(req);
+
+
+            //Only returns success when using Live Credentials
+            //Assert
+            //Assert.True(res.StatusCode == HttpStatusCode.Accepted);
+            //Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void VerifyTransaction()
+        {
+            //Arrange
+            var req = new TransactionVerificationRequest
+            {
+                TransactionReference = "TX00001"
+            };
+
+            //Act
+            var res = await _gladepayService.PutAsync<TransactionVerificationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
         }
     }
 }

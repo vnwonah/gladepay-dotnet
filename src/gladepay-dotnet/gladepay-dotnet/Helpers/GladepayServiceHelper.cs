@@ -56,6 +56,8 @@ namespace gladepay_dotnet.Helpers
         {
             switch (status)
             {
+                case "201":
+                    return HttpStatusCode.Accepted;
                 case "200":
                     return HttpStatusCode.OK;
                 case "202":
@@ -96,6 +98,10 @@ namespace gladepay_dotnet.Helpers
             else if (requestObject.GetType() == typeof(AccountChargeValidationRequest))
                 return GetEndpoint(Endpoint.payment);
             else if (requestObject.GetType() == typeof(MoneyTransferRequest))
+                return GetEndpoint(Endpoint.disburse);
+            else if (requestObject.GetType() == typeof(BulkMoneyTransferRequest))
+                return GetEndpoint(Endpoint.disburse);
+            else if (requestObject.GetType() == typeof(TransactionVerificationRequest))
                 return GetEndpoint(Endpoint.disburse);
             return GetEndpoint(Endpoint.disburse);
         }
