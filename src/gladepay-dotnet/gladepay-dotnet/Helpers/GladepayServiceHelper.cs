@@ -21,9 +21,13 @@ namespace gladepay_dotnet.Helpers
 
         internal static async Task<Response> DeserializeResponseAsync(HttpResponseMessage response)
         {
-            var content = JObject.Parse(await response.Content.ReadAsStringAsync());
+            var content = new JObject();
+            var responseString = await response.Content.ReadAsStringAsync();
 
-          
+            if(responseString != null && responseString != "null")
+            {
+                content = JObject.Parse(responseString);
+            }
 
             var responseObject = new Response
             {
@@ -81,12 +85,18 @@ namespace gladepay_dotnet.Helpers
                 return GetEndpoint(Endpoint.resources);
             else if (requestObject.GetType() == typeof(BillsListRequest))
                 return GetEndpoint(Endpoint.bills);
-            else if (requestObject.GetType() == typeof(ValidateCustomerBillInformationRequest))
+            else if (requestObject.GetType() == typeof(CustomerBillInformationVerificationRequest))
                 return GetEndpoint(Endpoint.bills);
             else if (requestObject.GetType() == typeof(BillPaymentRequest))
                 return GetEndpoint(Endpoint.bills);
-            else if (requestObject.GetType() == typeof(VerifyBillPaymentRequest))
+            else if (requestObject.GetType() == typeof(BillPaymentVerificationRequest))
                 return GetEndpoint(Endpoint.bills);
+            else if (requestObject.GetType() == typeof(AccountChargeRequest))
+                return GetEndpoint(Endpoint.payment);
+            else if (requestObject.GetType() == typeof(AccountChargeValidationRequest))
+                return GetEndpoint(Endpoint.payment);
+            else if (requestObject.GetType() == typeof(MoneyTransferRequest))
+                return GetEndpoint(Endpoint.disburse);
             return GetEndpoint(Endpoint.disburse);
         }
 

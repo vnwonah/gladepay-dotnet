@@ -2,7 +2,7 @@
 
 namespace gladepay_dotnet.Models.RequestModels
 {
-    public class VerifyBillPaymentRequest
+    public class BillPaymentVerificationRequest
     {
         [JsonProperty("action")]
         public const string Action = "verify";

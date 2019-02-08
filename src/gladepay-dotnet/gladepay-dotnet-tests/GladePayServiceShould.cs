@@ -159,6 +159,7 @@ namespace gladepay_dotnet_tests
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
         }
 
         [Fact]
@@ -229,14 +230,14 @@ namespace gladepay_dotnet_tests
         public async void ValidateCustomerInformationForBill()
         {
             //Arrange
-            var req = new ValidateCustomerBillInformationRequest
+            var req = new CustomerBillInformationVerificationRequest
             {
                 PayCode = "lAApm6OBmRmp3cQ",
                 Reference = "0000000001"
             };
 
             //Act
-            var res = await _gladepayService.PutAsync<ValidateCustomerBillInformationRequest>(req);
+            var res = await _gladepayService.PutAsync<CustomerBillInformationVerificationRequest>(req);
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
@@ -266,18 +267,93 @@ namespace gladepay_dotnet_tests
         public async void VerifyBillPayment()
         {
             //Arrange
-            var req = new VerifyBillPaymentRequest
+            var req = new BillPaymentVerificationRequest
             {
                 TransactionReference = "GP|BP|987555815|20190115N"
             };
 
 
             //Act
-            var res = await _gladepayService.PutAsync<VerifyBillPaymentRequest>(req);
+            var res = await _gladepayService.PutAsync<BillPaymentVerificationRequest>(req);
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
             Debug.WriteLine(res.Data);
+        }
+
+        /// <summary>
+        /// This service is not available on the test API. 
+        /// </summary>
+        [Fact]
+        public async void ChargeBankAccount()
+        {
+            //Arrange
+            var req = new AccountChargeRequest
+            {
+                User = new User
+                {
+                    FirstName = "Vincent",
+                    LastName = "Nwonah",
+                    Email = "vnwonah@outlook.com",
+                    IP = "192.168.33.10",
+                    FingerPrint = "ddsdschhdghgshghdgshghcx"
+                },
+                Account = new Account
+                {
+                    AccountNumber = "0226197826",
+                    BankCode = "058"
+                },
+                Amount = "100"
+            };
+
+            //Act 
+            var res = await _gladepayService.PutAsync<AccountChargeRequest>(req);
+
+            //Assert
+            Assert.True(res.Data["message"].ToString() == "Error: This method is not avaialble in test mode");
+            Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void ValidateBankAccountCharge()
+        {
+            //Arrange
+            var req = new AccountChargeValidationRequest
+            {
+                TransactionReference = "GP547925318M",
+                OTP = "123456"
+            };
+
+            //Act 
+            var res = await _gladepayService.PutAsync<AccountChargeValidationRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            
+
+        }
+
+        [Fact]
+        public async void InitiateMoneyTransferRequest()
+        {
+            //Arrange
+            var req = new MoneyTransferRequest
+            {
+                Amount = "100",
+                BankCode = "058",
+                AccountNumber = "0040000008",
+                SenderName = "John Doe",
+                Narration = "Upkeep",
+                OrderReference = "TX00001"
+            };
+
+            //Assert
+            var res = await _gladepayService.PutAsync<MoneyTransferRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+
         }
     }
 }

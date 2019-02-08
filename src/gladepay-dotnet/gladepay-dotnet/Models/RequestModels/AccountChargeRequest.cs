@@ -1,12 +1,14 @@
-﻿using gladepay_dotnet.Models.ResponseModels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace gladepay_dotnet.Models.RequestModels
 {
-    public class AccountChargeRequest : BaseRequest
+    public class AccountChargeRequest
     {
+        [JsonProperty("action")]
+        public const string Action = "charge";
+
         [JsonProperty("paymentType")]
-        public string PaymentType { get; set; } = "account";
+        public const string PaymentType = "account";
 
         [JsonProperty("user")]
         public User User { get; set; }

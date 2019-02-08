@@ -2,7 +2,7 @@
 
 namespace gladepay_dotnet.Models.RequestModels
 {
-    public class ValidateCustomerBillInformationRequest
+    public class CustomerBillInformationVerificationRequest
     {
         [JsonProperty("action")]
         public const string Action = "resolve";
