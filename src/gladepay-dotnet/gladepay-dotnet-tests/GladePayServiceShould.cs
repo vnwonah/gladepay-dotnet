@@ -24,13 +24,18 @@ namespace gladepay_dotnet_tests
                 MerchantKey = "123456789"
             });
         }
+
+
+        /*--------------------
+         * Note: Failing tests require live credentials       
+         */       
+
         [Fact]
         public async void InitiateCardChargeRequest()
         {
             //Arrange
             var req = new CardChargeRequest
             {
-                Action = "initiate",
                 User = new User
                 {
                     FirstName = "John",
@@ -49,7 +54,7 @@ namespace gladepay_dotnet_tests
                 },
                 Amount = "10000",
                 Country = "NG",
-                Currency = "NGN"         
+                Currency = "NGN"
             };
 
             //Act
@@ -68,7 +73,6 @@ namespace gladepay_dotnet_tests
 
             var req1 = new CardChargeRequest
             {
-                Action = "initiate",
                 User = new User
                 {
                     FirstName = "John",
@@ -115,7 +119,6 @@ namespace gladepay_dotnet_tests
             //Arrange
             var req = new RecurringCardChargeRequest
             {
-                Action = "initiate",
                 User = new User
                 {
                     FirstName = "John",
@@ -330,7 +333,7 @@ namespace gladepay_dotnet_tests
 
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
-            
+
 
         }
 
@@ -357,7 +360,7 @@ namespace gladepay_dotnet_tests
 
         }
 
-       
+
         [Fact]
         public async void InitiateBulkMoneyTransferRequest()
         {
@@ -413,6 +416,21 @@ namespace gladepay_dotnet_tests
             //Assert
             Assert.True(res.StatusCode == HttpStatusCode.OK);
             Debug.WriteLine(res.Data);
+        }
+
+        [Fact]
+        public async void GetRecurringTransactions()
+        {
+            //Arrange
+            var req = new RecurringTransactionsListRequest();
+
+            //Act
+            var res = await _gladepayService.PutAsync<RecurringTransactionsListRequest>(req);
+
+            //Assert
+            Assert.True(res.StatusCode == HttpStatusCode.OK);
+            Debug.WriteLine(res.Data);
+
         }
     }
 }

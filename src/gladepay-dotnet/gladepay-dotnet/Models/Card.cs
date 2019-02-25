@@ -16,7 +16,7 @@ namespace gladepay_dotnet.Models
         [JsonProperty("expiry_year")]
         public string ExpiryYear { get; set; }
 
-        [JsonProperty("cvv")]
+        [JsonProperty("ccv")]
         public string CCV { get; set; }
 
         [JsonProperty("pin")]

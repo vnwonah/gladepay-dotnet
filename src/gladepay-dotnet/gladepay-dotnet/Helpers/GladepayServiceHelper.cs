@@ -22,11 +22,23 @@ namespace gladepay_dotnet.Helpers
         internal static async Task<Response> DeserializeResponseAsync(HttpResponseMessage response)
         {
             var content = new JObject();
+            var arrContent = new JArray();
+
             var responseString = await response.Content.ReadAsStringAsync();
 
             if(responseString != null && responseString != "null")
             {
-                content = JObject.Parse(responseString);
+                try
+                {
+                    content = JObject.Parse(responseString);
+                }
+                catch (Exception)
+                {
+                    arrContent = JArray.Parse(responseString);
+                    content.Add("transactions", arrContent);
+                    
+                }
+
             }
 
             var responseObject = new Response
@@ -39,9 +51,9 @@ namespace gladepay_dotnet.Helpers
             {
                 responseObject.StatusCode = GetResponseCode(content["status"].ToString());
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                if (content.ContainsKey("214") || content.ContainsKey("data"))
+                if (content.ContainsKey("214") || content.ContainsKey("data") || content.ContainsKey("transactions"))
                 {
                     responseObject.StatusCode = HttpStatusCode.OK;
                 }
@@ -103,6 +115,8 @@ namespace gladepay_dotnet.Helpers
                 return GetEndpoint(Endpoint.disburse);
             else if (requestObject.GetType() == typeof(TransactionVerificationRequest))
                 return GetEndpoint(Endpoint.disburse);
+            else if (requestObject.GetType() == typeof(RecurringTransactionsListRequest))
+                return GetEndpoint(Endpoint.resources);
             return GetEndpoint(Endpoint.disburse);
         }
 

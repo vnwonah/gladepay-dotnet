@@ -6,8 +6,11 @@ using System.Text;
 
 namespace gladepay_dotnet.Models.RequestModels
 {
-    public class CardChargeRequest : BaseRequest
+    public class CardChargeRequest
     {
+        [JsonProperty("action")]
+        public readonly string Action = "initiate";
+
         [JsonProperty("paymentType")]
         public readonly string PaymentType = "card";
 

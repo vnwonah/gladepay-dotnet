@@ -1,31 +1,29 @@
-﻿using gladepay_dotnet.Enums;
-using gladepay_dotnet.Helpers;
-using gladepay_dotnet.Models;
-using gladepay_dotnet.Models.ResponseModels;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using gladepay_dotnet.Helpers;
+using gladepay_dotnet.Models;
+using gladepay_dotnet.Models.ResponseModels;
 
 namespace gladepay_dotnet.Services
 {
     public class GladePayService
     {
-        
+
         private static Credential _credential;
 
         private static HttpClient _client;
 
         public GladePayService(Credential credential)
         {
-            if(_client == null)
+            if (_client == null)
             {
                 _credential = credential;
                 _client = new HttpClient
                 {
                     BaseAddress = new Uri(_credential.BaseUrl)
-                    
+
                 };
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("mid", credential.MerchantId);
                 _client.DefaultRequestHeaders.TryAddWithoutValidation("key", credential.MerchantKey);
